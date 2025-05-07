@@ -1,0 +1,186 @@
+import { db } from './index';
+import { users, files, categories, sharedFiles, departmentSharedFiles, departementCollaborations, fileTypes } from './schema';
+import { eq, and, or, inArray } from 'drizzle-orm';
+
+export const userService = {
+  async createUser(name: string, passwordHash: string, email: string, departement: string, role: string, profileImage?: string) {
+    return await db.insert(users).values({
+      name,
+      passwordHash,
+      email,
+      profileImage,
+      departement,
+      role,
+      storageLimit: 1073741824, // 1GB in bytes
+      storageUsed: 0
+    }).run();
+  },
+
+  async updateUser(id: number, data: { name?: string; profileImage?: string; storageUsed?: number }) {
+    return await db.update(users)
+      .set(data)
+      .where(eq(users.id, id))
+      .run();
+  },
+
+  async getUserById(id: number) {
+    return await db.select().from(users).where(eq(users.id, id)).get();
+  },
+
+  async getUserByEmail(email: string) {
+    return await db.select().from(users).where(eq(users.email, email)).get();
+  },
+
+  async getUsersByDepartement(departement: string) {
+    return await db.select().from(users).where(eq(users.departement, departement)).all();
+  },
+
+  async getUsersByRole() {
+    return await db.select().from(users).where(eq(users.role, 'departement_admin')).all();
+  }
+};
+
+export const fileService = {
+  async createFile(name: string, type: string, size: number, path: string, userId: number, categoryId?: number) {
+    return await db.insert(files).values({
+      name,
+      type,
+      size,
+      path,
+      userId,
+      categoryId,
+      isShared: 0
+    }).run();
+  },
+
+  async getFilesByUserId(userId: number) {
+    return await db.select().from(files).where(eq(files.userId, userId)).all();
+  },
+
+  async getFilesByUserIdAndType(userId: number, type: string[]) {
+    return await db.select().from(files).where(and(eq(files.userId, userId), inArray(files.type, type))).all();
+  },
+
+  async getFilesByIds(Ids: number[]) {
+    return await db.select().from(files).where(inArray(files.id, Ids)).all();
+  },
+
+  async getFilesByCategory(categoryId: number) {
+    return await db.select().from(files).where(eq(files.categoryId, categoryId)).all();
+  },
+
+  async deleteFile(id: number) {
+    return await db.delete(files).where(eq(files.id, id)).run();
+  },
+
+  async updateFileSharedStatus(id: number, isShared: number) {
+    return await db.update(files)
+      .set({ isShared })
+      .where(eq(files.id, id))
+      .run();
+  }
+};
+
+export const categoryService = {
+  async createCategory(name: string, userId: number) {
+    return await db.insert(categories).values({
+      name,
+      userId,
+    }).run();
+  },
+
+  async getCategoriesByUserId(userId: number) {
+    return await db.select().from(categories).where(eq(categories.userId, userId)).all();
+  },
+
+  async getCategoriesByName(name: string) {
+    return await db.select().from(categories).where(eq(categories.name, name)).all();
+  },
+
+  async deleteCategory(id: number) {
+    return await db.delete(categories).where(eq(categories.id, id)).run();
+  }
+};
+
+export const sharedFileService = {
+  // Peer-to-peer sharing within department
+  async shareFileWithUser(fileId: number, senderId: number, receiverId: number) {
+    return await db.insert(sharedFiles).values({
+      fileId,
+      senderId,
+      receiverId
+    }).run();
+  },
+
+  // Department-wide sharing
+  async shareFileWithDepartment(fileId: number, senderId: number, departement: string) {
+    return await db.insert(departmentSharedFiles).values({
+      fileId,
+      senderId,
+      departement
+    }).run();
+  },
+
+  async getSharedFilesByReceiver(receiverId: number) {
+    return await db.select().from(sharedFiles).where(eq(sharedFiles.receiverId, receiverId)).all();
+  },
+
+  async getSharedFilesBySender(senderId: number) {
+    return await db.select().from(sharedFiles).where(eq(sharedFiles.senderId, senderId)).all();
+  },
+
+  async getSharedFileById(FileId: number) {
+    return await db.select().from(sharedFiles).where(eq(sharedFiles.fileId, FileId)).all();
+  },
+
+  async getDepartmentSharedFiles(departement: string) {
+    return await db.select().from(departmentSharedFiles)
+      .where(eq(departmentSharedFiles.departement, departement))
+      .all();
+  }
+};
+
+export const departmentService = {
+  async requestCollaboration(sourceDepartement: string, targetDepartement: string) {
+    return await db.insert(departementCollaborations).values({
+      sourceDepartement,
+      targetDepartement,
+      isApproved: 0
+    }).run();
+  },
+
+  async approveCollaboration(sourceDepartement: string, targetDepartement: string) {
+    return await db.update(departementCollaborations)
+      .set({ isApproved: 1 })
+      .where(and(
+        eq(departementCollaborations.sourceDepartement, sourceDepartement),
+        eq(departementCollaborations.targetDepartement, targetDepartement)
+      ))
+      .run();
+  },
+
+  async getCollaboratingDepartements(departement: string) {
+    return await db.select().from(departementCollaborations)
+      .where(and(
+        or(
+          eq(departementCollaborations.sourceDepartement, departement),
+          eq(departementCollaborations.targetDepartement, departement)
+        ),
+        eq(departementCollaborations.isApproved, 1)
+      ))
+      .all();
+  }
+};
+
+export const fileTypeService = {
+  async getAllFileTypes() {
+    return await db.select().from(fileTypes).all();
+  },
+
+  async getFileTypeByMimeType(mimeType: string) {
+    return await db.select().from(fileTypes)
+      .where(eq(fileTypes.mimeType, mimeType))
+      .get();
+  }
+};
+
