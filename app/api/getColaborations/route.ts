@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
-import { hash } from 'argon2';
-import { userService } from '@/db/services';
+import { departmentService, userService } from '@/db/services';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
+interface Payload {
+    userId: number,
+    email: string,
+    role: string,
+    departement: string
+}
 
 export async function GET(request: Request) {
   try {
@@ -16,29 +21,25 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, JWT_SECRET) as { payload: Payload };
     
-    if (payload.role !== 'platform_admin' && payload.role !== 'departement_admin') {
+    if (payload.role !== 'departement_admin') {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    const results = await userService.getUsersByRole();
+    const results = await departmentService.getAppending(payload.departement);
+
+
     console.log(results);
-    const filteredResults = results.map((user: any) => ({
-        departmentName: user.departement,
-        userName: user.name,
-        imgurl: user.profileImage,
-        createdAt: user.createdAt,
-      }));
     return NextResponse.json({
-        message: 'departements fetched succesufuly',
-        departments: filteredResults
+        message: 'pending colaborations fetched succesufuly',
+        colabs: results
       });
 
     
 
   } catch (error) {
-    console.error('Error fetching department:', error);
+    console.error('Error fetching colaborations:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

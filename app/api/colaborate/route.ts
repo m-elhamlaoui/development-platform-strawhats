@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { hash } from 'argon2';
-import { userService, fileService, categoryService } from '@/db/services';
+import { departmentService } from '@/db/services';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
 interface Payload {
@@ -23,38 +23,35 @@ export async function POST(request: Request) {
     }
 
     const { payload } = await jwtVerify(token, JWT_SECRET) as { payload: Payload };
+    //console.log(payload);
+    if (payload.role !== 'departement_admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
 
     // Parse request body
-    const { category, fileId } = await request.json();
-    console.log(category, fileId)
+    const { departement } = await request.json();
+    console.log(departement)
 
-    if (!category || !fileId) {
+    if (!departement) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // Check if user file already added
-    //const f = await categoryService.getCategoriesByName(category);
-    //console.log(f);
-    const TheCategory = await categoryService.getCategoriesByNameAndUserId(category, payload.userId);
-    const file = await fileService.getFilesByIds([fileId]);
+    // Check if invitation already exists
+    const existingColaboration = await departmentService.getAppendingColaboration(departement);
 
-    if (TheCategory[0].id === file[0].categoryId) { 
+    if (existingColaboration.length > 0) {
       return NextResponse.json(
-        { error: `file already added to category: ${category}` },
+        { error: 'colaboration already exist' },
         { status: 400 }
       );
     }
 
-    // add file to category
-    fileService.updateFileCategoryId(fileId, TheCategory[0].id);
-    
-
-    // Return success response with the generated password
+    await departmentService.requestCollaboration(payload.departement, departement);
     return NextResponse.json({
-      message: 'file added to category successfully'
+      message: 'departement colaboration created successfully',
     });
 
   } catch (error) {

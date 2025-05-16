@@ -6,6 +6,7 @@ interface SharedFileProps {
   type: string;
   size: number;
   sharedBy: number;
+  path: string;
 }
 
 const getFileIconAndColor = (type: string): { icon: React.ElementType; color: string } => {
@@ -27,11 +28,19 @@ const getFileIconAndColor = (type: string): { icon: React.ElementType; color: st
   }
 };
 
-export default function SharedFileCard({ name, type, size, sharedBy }: SharedFileProps) {
+export default function SharedFileCard({ name, type, size, sharedBy, path }: SharedFileProps) {
   const { icon: Icon, color } = getFileIconAndColor(type);
+  const handleDownload = (filePath: string, fileName: string) => {
+  const link = document.createElement('a');
+  link.href = filePath;
+  link.download = fileName; // forces download instead of navigating
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(path, name)}>
       <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center mb-3">
         <Icon className={`text-2xl ${color}`} />
       </div>

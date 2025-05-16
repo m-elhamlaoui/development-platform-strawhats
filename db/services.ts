@@ -70,12 +70,27 @@ export const fileService = {
   },
 
   async deleteFile(id: number) {
-    return await db.delete(files).where(eq(files.id, id)).run();
+    try{
+      await db.delete(sharedFiles).where(eq(sharedFiles.fileId, id)).run();
+      await db.delete(departmentSharedFiles).where(eq(departmentSharedFiles.fileId, id)).run();
+      await db.delete(files).where(eq(files.id, id)).run();
+      return { success: true, message: `File ${id} deleted from three tables` };
+    }catch(error){
+      console.error('Error deleting file:', error);
+      return { success: false, error };
+    }
   },
 
   async updateFileSharedStatus(id: number, isShared: number) {
     return await db.update(files)
       .set({ isShared })
+      .where(eq(files.id, id))
+      .run();
+  },
+
+  async updateFileCategoryId(id: number, categoryId: number) {
+    return await db.update(files)
+      .set({ categoryId })
       .where(eq(files.id, id))
       .run();
   }
@@ -95,6 +110,10 @@ export const categoryService = {
 
   async getCategoriesByName(name: string) {
     return await db.select().from(categories).where(eq(categories.name, name)).all();
+  },
+
+  async getCategoriesByNameAndUserId(name: string, userId: number) {
+    return await db.select().from(categories).where(and(eq(categories.name, name), eq(categories.userId, userId))).all();
   },
 
   async deleteCategory(id: number) {
@@ -167,6 +186,26 @@ export const departmentService = {
           eq(departementCollaborations.targetDepartement, departement)
         ),
         eq(departementCollaborations.isApproved, 1)
+      ))
+      .all();
+  },
+
+  async getAppendingColaboration(departement: string) {
+    return await db.select().from(departementCollaborations)
+      .where(
+        or(
+          eq(departementCollaborations.sourceDepartement, departement),
+          eq(departementCollaborations.targetDepartement, departement)
+        )
+      )
+      .all();
+  },
+
+   async getAppending(departement: string) {
+    return await db.select().from(departementCollaborations)
+      .where(and(
+        eq(departementCollaborations.targetDepartement, departement),
+        eq(departementCollaborations.isApproved, 0)
       ))
       .all();
   }

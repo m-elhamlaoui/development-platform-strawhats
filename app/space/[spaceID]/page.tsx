@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../../components/sideBar';
 import SearchBar from '../../components/search';
 import CategorySection from '../../components/categorySection';
@@ -10,9 +10,42 @@ import CollaborateSection from '../../components/colaborateSection';
 import StorageInfo from '../../components/StorageInfo';
 import SharedFiles from '../../components/sharedFiles';
 import InvitationCard from '../../components/InvitationCard';
+import { getCurrentUserClient } from '@/app/utils/auth-client';
+import { getColaborations } from '@/app/utils/getColaborations';
+
+interface User {
+  userId: number;
+  email: string;
+  role: string;
+  departement: string;
+}
+
+interface Colabs {
+  id: number;
+  sourceDepartement: string;
+  targetDepartement: string;
+  isApproved: number;
+  createdAt: string;
+}
+
+
 
 const UserSpace: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [user, setUser] = useState<User | null>(null);
+  const [colabs, setColabs] = useState<Colabs[]>([]);
+  const colors = ["bg-indigo-500", "bg-teal-500", "bg-pink-500"]
+  
+  useEffect(() => {
+      const fetchUser = async () => {
+        const currentUser = await getCurrentUserClient();
+        setUser(currentUser);
+        const {colabs} = await getColaborations();
+        setColabs(colabs);
+      };
+  
+      fetchUser();
+    }, []);
 
   return (
     <div className="flex h-screen bg-[#EBF2FC]">
@@ -30,7 +63,7 @@ const UserSpace: React.FC = () => {
         {/* Recent Files */}
         <RecentFilesSection />
         {/* Collaborate Section */}
-        <CollaborateSection />
+        {user?.role === 'departement_admin' && <CollaborateSection />}
       </div>
       {/* Right Sidebar */}
       <div className="w-80 p-4 ml-6 bg-white rounded-lg shadow-md h-fit">
@@ -41,14 +74,18 @@ const UserSpace: React.FC = () => {
           <SharedFiles />
 
           {/* Invitation Cards */}
-          <div className="mt-6 p-4 bg-[#F5F9FD] rounded-md shadow-md">
-          <h2 className="text-lg font-bold mb-4">Invitation</h2>
-          <InvitationCard title="Dev" color="bg-indigo-500" />
-          <InvitationCard title="Marketing" color="bg-teal-500" />
-          <InvitationCard title="djjs" color="bg-pink-500" />
-          <InvitationCard title="slwlj" color="bg-indigo-500" />
-          <InvitationCard title="dkes" color="bg-pink-500" />
-          </div>
+          {user?.role === 'departement_admin' && 
+          <>
+            <div className="mt-6 p-4 bg-[#F5F9FD] rounded-md shadow-md">
+              <h2 className="text-lg font-bold mb-4">Invitation</h2>
+              {colabs.map((colab) => {
+                return(
+                  <InvitationCard key={colab.id} title={colab.sourceDepartement} color={colors[Math.floor(Math.random() * colors.length)]}/>
+                )
+              })}
+            </div>
+          </>
+          }
         </div>
     </div>
   );

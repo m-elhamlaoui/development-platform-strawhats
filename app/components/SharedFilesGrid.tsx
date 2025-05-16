@@ -28,6 +28,7 @@ export default function SharedFilesGrid({ files }: SharedFilesGridProps) {
           type={file.type}
           size={file.size}
           sharedBy={file.userId}
+          path={file.path}
         />
       ))}
     </div>

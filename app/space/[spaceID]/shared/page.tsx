@@ -89,6 +89,15 @@ export default function SharedPage() {
     return matchesSearch && matchesType;
   });
 
+  const handleDownload = (filePath: string, fileName: string) => {
+    const link = document.createElement('a');
+    link.href = filePath;
+    link.download = fileName; // forces download instead of navigating
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="flex h-screen bg-[#EBF2FC]">
       <Sidebar />
@@ -115,7 +124,7 @@ export default function SharedPage() {
             {filteredFiles.slice(0, 4).map((file) => {
               const { icon: Icon, color } = getFileIconAndColor(file.type);
               return (
-                <div key={file.id} className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer">
+                <div key={file.id} className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(file.path, file.name)}>
                   <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center">
                     <Icon className={`text-xl ${color}`} />
                   </div>

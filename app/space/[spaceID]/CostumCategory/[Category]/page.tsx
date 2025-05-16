@@ -1,10 +1,11 @@
 'use client'
 
-import React from 'react';
+import React, {useEffect, use} from 'react';
 import Search from '@/app/components/search';
 import FileTypeFilter from '@/app/components/FileTypeFilter';
 import SharedFilesGrid from '@/app/components/SharedFilesGrid';
 import Sidebar from '@/app/components/sideBar';
+import { getFilesInCategory } from '@/app/utils/getFilesInCategory';
 
 const mockFiles = [
   { id: '1', name: 'Picture_1', type: 'image', size: '5 mb', sharedBy: 'marwan' },
@@ -15,15 +16,61 @@ const mockFiles = [
   { id: '6', name: 'Word_2', type: 'word', size: '5 mb', sharedBy: 'zakaria' },
 ];
 
+const getFilterByType = (type: string): { filter: string } => {
+  switch (type.toLowerCase()) {
+    case 'application/msword':
+    case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+      return { filter: 'word' };
+    case 'application/vnd.ms-excel':
+    case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+      return { filter: 'excel' };
+    case 'application/pdf':
+      return { filter: 'pdf' };
+    case 'image/png':
+    case 'image/jpg':
+    case 'image/gif':
+      return { filter: 'image' };
+    default:
+      return { filter: 'all' };
+  }
+};
+
+interface UploadedFile {
+  id: number;
+  name: string;
+  type: string;
+  size: number;
+  path: string;
+  userId: number;
+  categoryId: number;
+  isShared: number;
+  createdAt: string;
+}
 
 
-export default function SharedPage() {
+
+export default function SharedPage({ params }: { params: Promise<{ Category: string }> }) {
   const [selectedType, setSelectedType] = React.useState('all');
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [Files, setFiles] = React.useState<UploadedFile[]>([]);
+    const resolvedParams = use(params);
 
-  const filteredFiles = mockFiles.filter(file => {
+  useEffect(() => {
+    const fetchFiles = async () => {
+      const FetchedFiles = await getFilesInCategory(resolvedParams.Category);
+      const {message, files} = FetchedFiles;
+      console.log(files)
+      setFiles(files);
+    };
+
+    fetchFiles();
+  }, []);
+
+
+
+  const filteredFiles = Files.filter(file => {
     const matchesSearch = file.name.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = selectedType === 'all' || file.type.toLowerCase() === selectedType.toLowerCase();
+    const matchesType = selectedType === 'all' || getFilterByType(file.type).filter === selectedType.toLowerCase();
     return matchesSearch && matchesType;
   });
 
@@ -45,7 +92,6 @@ export default function SharedPage() {
 
         <SharedFilesGrid
           files={filteredFiles}
-          selectedType={selectedType}
         />
       </div>
     </div>

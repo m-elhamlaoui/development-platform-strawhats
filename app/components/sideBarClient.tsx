@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getCurrentUserClient } from '@/app/utils/auth-client';
 import Image from 'next/image';
+import { getUserData } from '../utils/getUserData';
+import { logout } from '../utils/logout';
 
 interface User {
   userId: number;
@@ -14,14 +16,31 @@ interface User {
   departement: string;
 }
 
+interface Data {
+  id: number;
+  name: string;
+  passwordHash: string;
+  email: string;
+  profileImage: string | null;
+  departement: string;
+  role: string;
+  storageLimit: number;
+  storageUsed: number;
+  createdAt: string | null;
+}
+
 const SideBarClient: React.FC = () => {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
+  const [data, setData] = useState<Data | null>(null);
 
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await getCurrentUserClient();
       setUser(currentUser);
+      const { user } = await getUserData();
+      setData(user);
+
     };
 
     fetchUser();
@@ -38,8 +57,8 @@ const SideBarClient: React.FC = () => {
         <div className="flex items-center mb-4 justify-center">
           <div className="relative w-16 h-16 rounded-full overflow-hidden">
             <Image
-              src="/images/portrait.png"
-              alt="user"
+              src={data?.profileImage ? data.profileImage : '/images/avatar.png'}
+              alt={data?.name ? data.name : 'profile image'}
               fill
               className="object-cover"
               priority
@@ -96,7 +115,7 @@ const SideBarClient: React.FC = () => {
                   </Link>
                 </li>
                 <li className="mb-4">
-                  <Link href={`/space/${user?.userId}/departements`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
+                  <Link href={`/space/${user?.userId}/departement`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                     <FaUsers className="mr-3" />
                     <span>departements</span>
                   </Link>
@@ -115,7 +134,7 @@ const SideBarClient: React.FC = () => {
         </button>
 
         {/* Logout Button */}
-        <button className="mt-2 w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 cursor-pointer">
+        <button className="mt-2 w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 cursor-pointer" onClick={() => logout()}>
           Log out
         </button>
       </div>

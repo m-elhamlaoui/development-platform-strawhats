@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { hash } from 'argon2';
-import { userService, fileService, categoryService } from '@/db/services';
+import { departmentService } from '@/db/services';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
 interface Payload {
@@ -14,7 +14,7 @@ interface Payload {
 
 export async function POST(request: Request) {
   try {
-    // Verify admin authentication
+    // Verify user authentication
     const cookieStore = await cookies();
     const token = cookieStore.get('token')?.value;
 
@@ -24,41 +24,34 @@ export async function POST(request: Request) {
 
     const { payload } = await jwtVerify(token, JWT_SECRET) as { payload: Payload };
 
-    // Parse request body
-    const { category, fileId } = await request.json();
-    console.log(category, fileId)
+    if (payload.role !== 'departement_admin') {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
+   
 
-    if (!category || !fileId) {
+    // Parse request body
+    const { colab } = await request.json();
+    console.log(colab)
+
+    if (!colab) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // Check if user file already added
-    //const f = await categoryService.getCategoriesByName(category);
-    //console.log(f);
-    const TheCategory = await categoryService.getCategoriesByNameAndUserId(category, payload.userId);
-    const file = await fileService.getFilesByIds([fileId]);
 
-    if (TheCategory[0].id === file[0].categoryId) { 
-      return NextResponse.json(
-        { error: `file already added to category: ${category}` },
-        { status: 400 }
-      );
-    }
 
-    // add file to category
-    fileService.updateFileCategoryId(fileId, TheCategory[0].id);
-    
+    // approve colabe
+    departmentService.approveCollaboration(colab, payload.departement);
 
-    // Return success response with the generated password
+    // Return success response 
     return NextResponse.json({
-      message: 'file added to category successfully'
+      message: 'colaboration approved successfully',
     });
 
   } catch (error) {
-    console.error('Error creating user:', error);
+    console.error('Error approving colaboration:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { colaborate } from '../utils/colaborate';
 
 interface CollaborateCardProps {
   id: number;
@@ -9,9 +10,16 @@ interface CollaborateCardProps {
 }
 
 const CollaborateCard: React.FC<CollaborateCardProps> = ({ id, name, color, image }) => {
+
+  const handleColaboration = async (departement: string) => {
+      const result = await colaborate(departement);
+      console.log(result);
+    };
+
   return (
     <div
       className={`w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md ${color} cursor-pointer`}
+      onClick={() => handleColaboration(name)}
     >
       <div className="relative w-16 h-16 rounded-full overflow-hidden">
         <Image

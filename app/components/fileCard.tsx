@@ -12,7 +12,7 @@ interface FileCardProps {
 const FileCard: React.FC<FileCardProps> = ({ id, name  }) => {
   const pathname = usePathname();
   return (
-    <Link href={`${pathname}/CostumCategory/${name}`}>
+    <Link href={`${pathname}/CostumCategory/${id}`}>
     <div className="w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md bg-white shadow-md hover:shadow-lg transition-shadow cursor-pointer">
       <FaFolder className={`text-xl text-gray-400`} />
       <p className="text-lg font-bold">{name}</p>
