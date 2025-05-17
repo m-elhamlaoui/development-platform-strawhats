@@ -72,7 +72,8 @@ export async function POST(request: Request) {
       hashedPassword,
       email,
       payload.departement,
-      'user'
+      'user',
+      '/images/avatar.png'
     );
 
     // Return success response with the generated password

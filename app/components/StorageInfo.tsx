@@ -1,15 +1,20 @@
+import Link from 'next/link';
 import React from 'react';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 
-const StorageInfo: React.FC = () => {
+interface SharedFileProps {
+  id: number | undefined;
+}
+
+const StorageInfo = ({ id }: SharedFileProps) => {
   return (
     <div>
-      <div className='flex flex-col items-center justify-center p-4 bg-[#F5F9FD] cursor-pointer'>
-      <FaCloudUploadAlt className="text-7xl text-[#377dff] mb-4" />
+      <Link href={`/space/${id}/upload`} className='flex flex-col items-center justify-center p-4 bg-[#F5F9FD] cursor-pointer'>
+        <FaCloudUploadAlt className="text-7xl text-[#377dff] mb-4" />
         <div>
           Add New File
         </div>
-      </div>
+      </Link>
       <div className="mt-6 p-4 bg-[#F5F9FD] rounded-md shadow-md">
       <p className="text-lg font-bold mb-2">Your Storage</p>
       <p className="text-sm mb-2">

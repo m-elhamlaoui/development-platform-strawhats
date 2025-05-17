@@ -25,6 +25,7 @@ export async function GET(request: Request) {
     const results = await userService.getUsersByRole();
     console.log(results);
     const filteredResults = results.map((user: any) => ({
+        id: user.id,
         departmentName: user.departement,
         userName: user.name,
         imgurl: user.profileImage,

@@ -27,7 +27,15 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { error: 'Invalid email or password' },
         { status: 401 }
-      );
+      )
+    }
+
+    if(user.isActive === 0){
+      console.log('user does not exist');
+      return NextResponse.json(
+        { error: 'Invalid email or password' },
+        { status: 401 }
+      )
     }
 
     // Verify password

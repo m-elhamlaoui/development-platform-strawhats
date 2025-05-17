@@ -16,9 +16,20 @@ export const userService = {
     }).run();
   },
 
-  async updateUser(id: number, data: { name?: string; profileImage?: string; storageUsed?: number }) {
+  async updateUser(id: number, data: { name?: string; profileImage?: string; storageUsed?: number, isActive?: number }) {
+
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value !== undefined)
+  );
+
+  if (Object.keys(cleanData).length === 0) {
+    throw new Error('No valid fields to update');
+  }
+
+  console.log("clean data: ", cleanData);
+
     return await db.update(users)
-      .set(data)
+      .set(cleanData)
       .where(eq(users.id, id))
       .run();
   },
@@ -37,6 +48,14 @@ export const userService = {
 
   async getUsersByRole() {
     return await db.select().from(users).where(eq(users.role, 'departement_admin')).all();
+  },
+
+  async deleteUser(userId: number) {
+    return await db.delete(users).where(eq(users.id, userId)).run();
+  },
+
+  async deleteUsersByIds(Ids: number[]) {
+    return await db.delete(users).where(inArray(users.id, Ids)).run();
   }
 };
 
@@ -65,8 +84,20 @@ export const fileService = {
     return await db.select().from(files).where(inArray(files.id, Ids)).all();
   },
 
+  async deleteNotSharedFilesByUserId(Id: number) {
+    return await db.delete(files).where(and(eq(files.userId, Id), eq(files.isShared, 0))).run();
+  },
+
+  async getNotSharedFilesByUserId(Id: number) {
+    return await db.select().from(files).where(and(eq(files.userId, Id), eq(files.isShared, 0))).all();
+  },
+
   async getFilesByCategory(categoryId: number) {
     return await db.select().from(files).where(eq(files.categoryId, categoryId)).all();
+  },
+
+  async getFilesByUsersIds(Ids: number[]) {
+    return await db.select().from(files).where(inArray(files.userId, Ids)).all();
   },
 
   async deleteFile(id: number) {
@@ -79,6 +110,10 @@ export const fileService = {
       console.error('Error deleting file:', error);
       return { success: false, error };
     }
+  },
+
+  async deleteFilesByUsersIds(Ids: number[]) {
+    return await db.delete(files).where(inArray(files.userId, Ids)).run();
   },
 
   async updateFileSharedStatus(id: number, isShared: number) {
@@ -118,6 +153,14 @@ export const categoryService = {
 
   async deleteCategory(id: number) {
     return await db.delete(categories).where(eq(categories.id, id)).run();
+  },
+
+  async deleteCategoryByUserId(id: number) {
+    return await db.delete(categories).where(eq(categories.userId, id)).run();
+  },
+
+  async deleteCategoryByUsersIds(ids: number[]) {
+    return await db.delete(categories).where(inArray(categories.userId, ids)).run();
   }
 };
 
@@ -156,7 +199,16 @@ export const sharedFileService = {
     return await db.select().from(departmentSharedFiles)
       .where(eq(departmentSharedFiles.departement, departement))
       .all();
+  },
+
+  async deleteSharedFilesBydepartement(departement: string) {
+    return await db.delete(departmentSharedFiles).where(eq(departmentSharedFiles.departement, departement)).run();
+  },
+
+  async deleteSharedFilesByChangersIds(Ids: number[]) {
+    return await db.delete(sharedFiles).where(inArray(sharedFiles.senderId, Ids)).run();
   }
+
 };
 
 export const departmentService = {

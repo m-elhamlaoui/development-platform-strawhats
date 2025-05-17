@@ -8,6 +8,7 @@ export const users = sqliteTable('users', {
   profileImage: text('profile_image'),
   departement: text('departement').notNull(),
   role: text('role').notNull(),
+  isActive: integer('isActive').notNull().default(1),
   storageLimit: integer('storage_limit').notNull().default(1073741824), // 1GB in bytes
   storageUsed: integer('storage_used').notNull().default(0),
   createdAt: text('created_at').default('CURRENT_TIMESTAMP'),

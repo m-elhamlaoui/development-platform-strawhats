@@ -29,12 +29,17 @@ export async function GET(request: Request) {
 
     const results = await userService.getUsersByDepartement(payload.departement);
     console.log(results);
-    const filteredResults = results.map((user: any) => ({
-        userName: user.name,
-        role: user.role,
-        imgurl: user.profileImage,
-        createdAt: user.createdAt,
-      }));
+    const filteredResults = results.map((user: any) => {
+  if (user.isActive === 1) {
+    return {
+      id: user.id,
+      userName: user.name,
+      role: user.role,
+      imgurl: user.profileImage,
+      createdAt: user.createdAt,
+    };
+  }
+}).filter(Boolean); // Removes undefined values
     return NextResponse.json({
         message: 'users fetched succesufuly',
         departments: filteredResults

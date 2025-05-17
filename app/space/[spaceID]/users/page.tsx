@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/sideBar';
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaTrash } from 'react-icons/fa';
 import Search from '../../../components/search';
 import { fetchDepartementUsers } from '@/app/utils/fetchDepartemntUsers';
+import { deleteUser } from '@/app/utils/deleteUser';
  
 
 //const users = [
@@ -17,11 +18,14 @@ import { fetchDepartementUsers } from '@/app/utils/fetchDepartemntUsers';
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState<{ 
+    id: number;
     userName: string; 
     role: string;
     imgurl: string;
     createdAt: string;
     }[] | null>(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [conf, setConf] = useState(0)
 
   useEffect(() => {
     const getDepartementUsers = async () => {
@@ -32,6 +36,19 @@ export default function UsersPage() {
 
     getDepartementUsers();
   }, []);
+
+  const handleDelete = async (userId: number) => {
+    // Handle delete logic here
+    const result = await deleteUser(String(userId));
+    console.log('Deleting user:', userId, result);
+    //const result = deleteFile(userId);
+    setIsDeleteOpen(false);
+  };
+
+  const handleSettings = (userId: number) => {
+    setIsDeleteOpen(!isDeleteOpen);
+    setConf(userId)
+  };
 
   const filteredUsers = users === null ? [] : users.filter(user => user.userName.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -49,7 +66,7 @@ export default function UsersPage() {
             {filteredUsers.map((user, idx) => (
               <div
                 key={user.userName}
-                className="flex items-center bg-white rounded-xl px-6 py-4 shadow-sm"
+                className="flex items-center bg-white rounded-xl px-6 py-4 shadow-sm relative"
               >
                 {/* User image or colored circle */}
                 {user.imgurl ? (
@@ -68,7 +85,18 @@ export default function UsersPage() {
                   <span className="ml-6 text-gray-400">{user.role}</span>
                 </div>
                 <span className="text-gray-300 mr-6">{user.createdAt}</span>
-                <FaCog className="text-[#205295] text-xl cursor-pointer hover:text-indigo-500 transition-color" title="Manage user" />
+                <FaCog className="text-[#205295] text-xl cursor-pointer hover:text-indigo-500 transition-color" title="Manage user" onClick={() => handleSettings(user.id)} />
+                {isDeleteOpen && user.id === conf && (
+                  <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50">
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-2"
+                    >
+                      <FaTrash />
+                      Delete File
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

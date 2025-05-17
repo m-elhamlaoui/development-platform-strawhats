@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { hash } from 'argon2';
-import { sharedFileService } from '@/db/services';
+import { sharedFileService, fileService } from '@/db/services';
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
 interface Payload {
@@ -50,6 +50,8 @@ export async function POST(request: Request) {
     await sharedFileService.shareFileWithDepartment(
       fileId, payload.userId, payload.departement
     );
+
+    await fileService.updateFileSharedStatus(fileId, 1);
 
     // Return success response
     return NextResponse.json({

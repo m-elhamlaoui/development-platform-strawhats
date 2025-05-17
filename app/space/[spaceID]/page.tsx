@@ -68,7 +68,7 @@ const UserSpace: React.FC = () => {
       {/* Right Sidebar */}
       <div className="w-80 p-4 ml-6 bg-white rounded-lg shadow-md h-fit">
           {/* Storage Info */}
-          <StorageInfo />
+          <StorageInfo id={user?.userId}/>
 
           {/* Shared Files */}
           <SharedFiles />

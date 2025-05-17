@@ -29,7 +29,7 @@ export async function GET(request: Request) {
     console.log(results);
     return NextResponse.json({
         message: 'users fetched succesufuly',
-        user: results
+        userData: results
       });
 
     

@@ -1,31 +1,77 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Sidebar from '../../../components/sideBar';
 import { FaCamera } from 'react-icons/fa';
+import { getUserData } from '@/app/utils/getUserData';
+
+
+
 
 const EditProfilePage: React.FC = () => {
-  const [name, setName] = useState('John Doe');
-  const [profileImage, setProfileImage] = useState('/images/portrait.png');
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [profileImage, setProfileImage] = useState('/images/avatar.png');
+const [previewImage, setPreviewImage] = useState<string | null>(null);
+const [img, setImg] = useState<File>();
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+ useEffect(() => {
+    const fetchUser = async () => {
+      const { userData } = await getUserData();
+      setProfileImage(userData.profileImage)
+      //setData(userData);
+
+    };
+
+    fetchUser();
+  }, []);
+
+
+const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    setImg(file);
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  }
+};
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!img) {
+    console.warn('No file selected');
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append('file', img);
+
+  try {
+    const res = await fetch('/api/updateProfile', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      console.log('Upload successful:', data);
+      // Optionally reset form
+      setPreviewImage(null);
+      setImg(undefined);
+    } else {
+      console.error('Upload failed:', data.error);
     }
-  };
+  } catch (error) {
+    console.error('Upload error:', error);
+  }
+};
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission here
-    console.log('Updating profile:', { name, profileImage });
-  };
+
 
   return (
     <div className="flex h-screen bg-[#EBF2FC]">
@@ -62,27 +108,13 @@ const EditProfilePage: React.FC = () => {
               <p className="text-sm text-gray-500">Click on the image to change your profile picture</p>
             </div>
 
-            {/* Name Input */}
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#06367A] focus:border-transparent"
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
+            
 
             {/* Submit Button */}
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 bg-[#06367A] text-white rounded-md hover:bg-[#052b5f] transition-colors"
+                className="px-6 py-2 bg-[#06367A] text-white rounded-md hover:bg-[#052b5f] transition-colors cursor-pointer"
               >
                 Save Changes
               </button>

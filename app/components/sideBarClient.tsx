@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaHome, FaShareAlt, FaUpload, FaUserPlus, FaUsers, FaUserEdit } from 'react-icons/fa';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -33,13 +34,15 @@ const SideBarClient: React.FC = () => {
   const pathname = usePathname();
   const [user, setUser] = useState<User | null>(null);
   const [data, setData] = useState<Data | null>(null);
+    const router = useRouter();
+
 
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await getCurrentUserClient();
       setUser(currentUser);
-      const { user } = await getUserData();
-      setData(user);
+      const { userData } = await getUserData();
+      setData(userData);
 
     };
 
@@ -128,13 +131,15 @@ const SideBarClient: React.FC = () => {
 
       <div>
         {/* Profile Edit Button */}
-        <button className="mb-2 w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 flex items-center justify-center cursor-pointer">
+        <Link href={`/space/${user?.userId}/editProfile`} className="mb-2 w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 flex items-center justify-center cursor-pointer">
           <FaUserEdit className="mr-2" />
           Edit Profile
-        </button>
+        </Link>
 
         {/* Logout Button */}
-        <button className="mt-2 w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 cursor-pointer" onClick={() => logout()}>
+        <button className="mt-2 w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 cursor-pointer" onClick={async () => {await logout();
+          router.push('/login');
+        }}>
           Log out
         </button>
       </div>

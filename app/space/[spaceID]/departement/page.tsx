@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../../components/sideBar';
-import { FaCog } from 'react-icons/fa';
+import { FaCog, FaTrash } from 'react-icons/fa';
 import Search from '../../../components/search';
 import { fetchDepartement } from '@/app/utils/fetchDepartement';
+import { deleteDepartement } from '@/app/utils/deleteDepartement';
 
 //const users = [
   //{ name: 'Dev', admin: 'marwan', date: '12/12/2022', color: 'bg-indigo-400', img: '' },
@@ -16,11 +17,14 @@ import { fetchDepartement } from '@/app/utils/fetchDepartement';
 export default function UsersPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [users, setUsers] = useState<{ 
+    id: number;
     departmentName: string; 
     userName: string; 
     imgurl: string;
     createdAt: string;
     }[] | null>(null);
+    const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+    const [conf, setConf] = useState(0)
   useEffect(() => {
     const getDepartement = async () => {
       const result = await fetchDepartement();
@@ -30,6 +34,19 @@ export default function UsersPage() {
 
     getDepartement();
   }, []);
+
+    const handleDelete = async (userId: number) => {
+      // Handle delete logic here
+      const result = await deleteDepartement(String(userId));
+      console.log('Deleting departement:', userId, result);
+      //const result = deleteFile(userId);
+      setIsDeleteOpen(false);
+    };
+  
+    const handleSettings = (userId: number) => {
+      setIsDeleteOpen(!isDeleteOpen);
+      setConf(userId)
+    };
 
   const filteredUsers = users === null ? [] : users.filter(user => user.departmentName.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -47,7 +64,7 @@ export default function UsersPage() {
             {filteredUsers.map((user, idx) => (
               <div
                 key={user.departmentName}
-                className="flex items-center bg-white rounded-xl px-6 py-4 shadow-sm"
+                className="flex items-center bg-white rounded-xl px-6 py-4 shadow-sm relative"
               >
                 {/* User image or colored circle */}
                 {user.imgurl ? (
@@ -66,7 +83,18 @@ export default function UsersPage() {
                   <span className="ml-6 text-gray-400">{user.userName}</span>
                 </div>
                 <span className="text-gray-300 mr-6">{user.createdAt}</span>
-                <FaCog className="text-[#205295] text-xl cursor-pointer hover:text-indigo-500 transition-color" title="Manage departement" />
+                <FaCog className="text-[#205295] text-xl cursor-pointer hover:text-indigo-500 transition-color" title="Manage departement" onClick={() => handleSettings(user.id)}/>
+                {isDeleteOpen && user.id === conf && (
+                  <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50">
+                    <button
+                      onClick={() => handleDelete(user.id)}
+                      className="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors flex items-center gap-2"
+                    >
+                      <FaTrash />
+                      Delete departement
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
           </div>

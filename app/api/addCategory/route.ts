@@ -39,11 +39,15 @@ export async function POST(request: Request) {
     // Check if user category already exists
     const existingCategory = await categoryService.getCategoriesByName(category);
 
-    if (existingCategory && existingCategory.length > 0) {
-      return NextResponse.json(
-        { error: 'category already exist' },
-        { status: 400 }
-      );
+    if (existingCategory.length > 0) {
+      for(const category of existingCategory){
+        if(category.userId === payload.userId){
+          return NextResponse.json(
+            { error: 'category already exist' },
+            { status: 400 }
+          );
+        }
+      }
     }
 
 
