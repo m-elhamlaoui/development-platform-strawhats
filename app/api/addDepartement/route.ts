@@ -3,6 +3,8 @@ import { cookies } from 'next/headers';
 import { jwtVerify } from 'jose';
 import { hash } from 'argon2';
 import { userService } from '@/db/services';
+import nodemailer from 'nodemailer';
+
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
 
@@ -68,6 +70,32 @@ export async function POST(request: Request) {
       departement,
       'departement_admin'
     );
+
+    // Configure nodemailer with Gmail
+            const transporter = nodemailer.createTransport({
+                service: 'gmail',
+                
+                auth: {
+                    user: process.env.GMAIL_USER,
+                    pass: process.env.GMAIL_APP_PASSWORD,
+                },
+            });
+    
+            // Email content
+            const mailOptions = {
+                from: process.env.GMAIL_USER,
+                to: email, // You'll receive emails at your Gmail address
+                subject: `Contact Form: credential of departement (${departement}) admin: ${admin}`,
+                html: `
+                    <h3>New Contact Form Submission</h3>
+                    <p><strong>Name:</strong> ${admin}</p>
+                    <p><strong>Email:</strong> ${email}</p>
+                    <p><strong>Password:</strong> ${randomPassword}</p>
+                `,
+            };
+    
+            // Send email
+            await transporter.sendMail(mailOptions);
 
     // Return success response with the generated password
     return NextResponse.json({
