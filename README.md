@@ -66,7 +66,7 @@ Make sure you have the following installed:
 - [npm](https://www.npmjs.com/)  or yarn
 - Database engine
 
-### Installation
+### Installation 
 
 ```bash
 git clone https://github.com/m-elhamlaoui/development-platform-strawhats.git
