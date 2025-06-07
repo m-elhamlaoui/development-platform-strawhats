@@ -61,6 +61,7 @@ There are three types of users in the system:
 
 Make sure you have the following installed:
 
+- [next.js](https://nextjs.org/)
 - [Node.js](https://nodejs.org/)
 - [npm](https://www.npmjs.com/)  or yarn
 - Database engine
