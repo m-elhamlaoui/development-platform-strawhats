@@ -51,22 +51,22 @@ const RecentFileCard: React.FC<RecentFileCardProps> = ({ id, name, type, size, c
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 mb-2 bg-white rounded-md shadow-md cursor-pointer">
+    <div className="flex items-center justify-between px-4 py-2 mb-2 bg-[#111827] rounded-md shadow-md cursor-pointer">
       <div className="flex items-center space-x-4">
-        <div className={`w-10 h-10 ${color} rounded-full flex items-center justify-center`}>
-            <Icon className={`text-xl text-white`} />
-        </div>
+        
+            <Icon className={`text-xl text-[#13C2C2]`} />
+        
         <div>
-          <p className="text-lg font-bold">{name.split('-')[1].slice(0, 15)}</p>
-          <p className="text-sm text-gray-500">{type}</p>
+          <p className="text-lg font-bold text-[#40A9FF]">{name.split('-')[1].slice(0, 15)}</p>
+          <p className="text-sm text-white">{type}</p>
         </div>
       </div>
       <div>
-        <p className="text-sm text-gray-500">{(Number(size)/(2024*2024)).toFixed(1)} mb</p>
+        <p className="text-sm text-white">{(Number(size)/(2024*2024)).toFixed(1)} mb</p>
       </div>
       <div className="relative">
         <button 
-          className="p-2 text-gray-500 hover:text-indigo-500 transition-colors cursor-pointer"
+          className="p-2 text-white hover:text-indigo-500 transition-colors cursor-pointer"
           onClick={handleShare}
         >
           <FaShare className="text-lg" />
@@ -105,10 +105,10 @@ const RecentFileCard: React.FC<RecentFileCardProps> = ({ id, name, type, size, c
       </div>
       <div className="relative">
         <button 
-          className="p-2 text-gray-500 hover:text-indigo-500 transition-colors cursor-pointer"
+          className="p-2 text-white hover:text-indigo-500 transition-colors cursor-pointer"
           onClick={handleSettings}
         >
-          <FaCog className="text-lg"/>
+          <FaCog className="text-lg "/>
         </button>
 
         {isDeleteOpen && (

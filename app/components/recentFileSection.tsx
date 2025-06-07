@@ -77,7 +77,7 @@ const RecentFilesSection: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-bold mb-4">Recent files</h2>
+      <h2 className="text-lg font-bold mb-4 text-[#40A9FF]">Recent files</h2>
       <div>
         {Files.toReversed().map((file) => (
           <RecentFileCard key={file.id} name={file.name} size={String(file.size)} type={getFilterByType(file.type).filter} color={getFileIconAndColor(file.type).color} icon={getFileIconAndColor(file.type).icon} iconColor='' id={file.id}/>

@@ -74,7 +74,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   return (
-    <div className="flex h-screen bg-[#EBF2FC]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
 
       <div className="flex-1 p-6 ml-52">
@@ -105,7 +105,7 @@ const handleSubmit = async (e: React.FormEvent) => {
                   className="hidden"
                 />
               </div>
-              <p className="text-sm text-gray-500">Click on the image to change your profile picture</p>
+              <p className="text-sm text-white">Click on the image to change your profile picture</p>
             </div>
 
             

@@ -41,7 +41,7 @@ const CollaborateSection: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-bold mb-4">Collaborate</h2>
+      <h2 className="text-lg font-bold mb-4 text-[#40A9FF]">Collaborate</h2>
       <div className="flex space-x-4">
         {users.map((department, index) => (
           department.departmentName !== user?.departement &&

@@ -12,7 +12,7 @@ const categories = [
 const CategorySection: React.FC = () => {
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-bold mb-4">categories</h2>
+      <h2 className="text-lg font-bold mb-4 text-[#40A9FF]">categories</h2>
       <div className="flex space-x-4">
         {categories.map((category) => (
           <CategoryCard key={category.id} {...category} />

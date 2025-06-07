@@ -67,15 +67,15 @@ const SharedFiles: React.FC = () => {
 
 
   return (
-    <div className="mt-6 p-4 bg-[#F5F9FD] rounded-md shadow-md cursor-pointer">
-      <h2 className="text-lg font-bold mb-4">Shared Files</h2>
+    <div className="mt-6 p-4 bg-[#111827] rounded-md shadow-md cursor-pointer">
+      <h2 className="text-lg font-bold mb-4 text-[#377dff]">Shared Files</h2>
       {Files.toReversed().map((file) => {
       const { icon: FileIcon, color } = getFileIconAndColor(file.type);
 
       return (
         <div
           key={file.id}
-          className={`flex items-center justify-between px-4 py-2 mb-2 rounded-md shadow-inner ${color}`}
+          className={`flex items-center justify-between px-4 py-2 mb-2 rounded-md shadow-inner bg-[#0d1423]`}
           onClick={() => handleDownload(file.path, file.name)}
         >
           <p className="text-lg font-bold text-white">{file.name.split('-')[1].length >= 10 ? file.name.split('-')[1].slice(0, 9)+'..' : file.name.split('-')[1]}</p>

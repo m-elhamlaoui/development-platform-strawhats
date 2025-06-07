@@ -44,16 +44,16 @@ const FilesSection: React.FC = () => {
 
   return (
     <div className="mt-6">
-      <h2 className="text-lg font-bold mb-4">Files</h2>
+      <h2 className="text-lg font-bold mb-4 text-[#40A9FF]">Files</h2>
       <div className="flex space-x-4">
         {categories.map((file) => (
           <FileCard key={file.id} id={file.id} name={file.name} />
         ))}
         <div 
-          className="w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md bg-white shadow-md hover:shadow-lg transition-shadow cursor-pointer"
+          className="w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md bg-[#111827] shadow-md hover:shadow-lg transition-shadow cursor-pointer"
           onClick={() => setIsModalOpen(true)}
         >
-          <span className="text-4xl font-bold text-gray-500">+</span>
+          <span className="text-4xl font-bold text-white">+</span>
         </div>
         {/* Modal */}
       {isModalOpen && (

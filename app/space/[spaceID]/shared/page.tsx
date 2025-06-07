@@ -99,7 +99,7 @@ export default function SharedPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#EBF2FC]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
       
       <div className="flex-1 p-6 ml-52">
@@ -107,7 +107,7 @@ export default function SharedPage() {
           <Search onSearch={setSearchQuery} />
         </div>
 
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">Your Shared Files</h1>
+        <h1 className="text-2xl font-semibold text-[#40A9FF] mb-6">Your Shared Files</h1>
         
         <FileTypeFilter
           selectedType={selectedType}
@@ -119,20 +119,20 @@ export default function SharedPage() {
         />
 
         <div className="mt-12">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">Shared Recently</h2>
+          <h2 className="text-xl font-semibold text-[#40A9FF] mb-6">Shared Recently</h2>
           <div className="space-y-4">
             {filteredFiles.slice(0, 4).map((file) => {
               const { icon: Icon, color } = getFileIconAndColor(file.type);
               return (
-                <div key={file.id} className="flex items-center gap-4 p-4 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(file.path, file.name)}>
-                  <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center">
-                    <Icon className={`text-xl ${color}`} />
-                  </div>
+                <div key={file.id} className="flex items-center gap-4 p-4 bg-[#111827] rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(file.path, file.name)}>
+                  
+                    <Icon className={`text-xl text-[#13C2C2]`} />
+                 
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900">{file.name.split('-')[1]}</h3>
-                    <p className="text-sm text-gray-500">{file.type === "application/msword" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? "word" : file.type === "application/vnd.ms-excel" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? "excel" : file.type} file</p>
+                    <h3 className="font-bold text-[#40A9FF]">{file.name.split('-')[1]}</h3>
+                    <p className="text-sm text-white">{file.type === "application/msword" || file.type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? "word" : file.type === "application/vnd.ms-excel" || file.type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? "excel" : file.type} file</p>
                   </div>
-                  <div className="text-sm text-gray-500">{(file.size/(1024*1024)).toFixed(1)} mb</div>
+                  <div className="text-sm text-white">{(file.size/(1024*1024)).toFixed(1)} mb</div>
                 </div>
               );
             })}

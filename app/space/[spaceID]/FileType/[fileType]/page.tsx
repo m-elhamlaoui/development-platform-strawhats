@@ -119,7 +119,7 @@ export default function CategoryFilesPage({ params }: { params: Promise<{ fileTy
   );
 
   return (
-    <div className="flex h-screen bg-[#EBF2FC]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
 
       <div className="flex-1 p-6 ml-52">
@@ -129,7 +129,7 @@ export default function CategoryFilesPage({ params }: { params: Promise<{ fileTy
         </div>
 
         {/* Page Title */}
-        <h1 className="text-2xl font-semibold text-gray-900 mb-6">Category Files</h1>
+        <h1 className="text-2xl font-semibold text-[#40A9FF] mb-6">Category Files</h1>
 
         {/* File Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -138,7 +138,7 @@ export default function CategoryFilesPage({ params }: { params: Promise<{ fileTy
             return (
               <div
                 key={file.id}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
+                className="bg-[#111827] rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer relative"
               >
                 {/* Settings Button */}
                 <button
@@ -215,12 +215,12 @@ export default function CategoryFilesPage({ params }: { params: Promise<{ fileTy
 
                 {/* File Info */}
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center">
-                    <Icon className={`text-2xl ${color}`} />
-                  </div>
+                  
+                    <Icon className={`text-2xl text-[#13C2C2]`} />
+                  
                   <div className="flex-1">
-                    <h3 className="font-bold text-gray-900">{file.name.split('-')[1]}</h3>
-                    <p className="text-sm text-gray-500">
+                    <h3 className="font-bold text-[#40A9FF]">{file.name.split('-')[1]}</h3>
+                    <p className="text-sm text-white">
                       {file.type.includes('word')
                         ? 'Word'
                         : file.type.includes('excel')
@@ -230,7 +230,7 @@ export default function CategoryFilesPage({ params }: { params: Promise<{ fileTy
                         : 'Other'}{' '}
                       file
                     </p>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <p className="text-sm text-white mt-1">
                       {(file.size / (1024 * 1024)).toFixed(1)} MB
                     </p>
                   </div>

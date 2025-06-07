@@ -48,7 +48,7 @@ const UserSpace: React.FC = () => {
     }, []);
 
   return (
-    <div className="flex h-screen bg-[#EBF2FC]">
+    <div className="flex h-screen bg-[#0A192F]">
       {/* Sidebar */}
       <Sidebar />
 
@@ -66,7 +66,7 @@ const UserSpace: React.FC = () => {
         {user?.role === 'departement_admin' && <CollaborateSection />}
       </div>
       {/* Right Sidebar */}
-      <div className="w-80 p-4 ml-6 bg-white rounded-lg shadow-md h-fit">
+      <div className="w-80 p-4 ml-6 bg-[#0A192F] rounded-lg shadow-md h-fit">
           {/* Storage Info */}
           <StorageInfo id={user?.userId}/>
 
@@ -76,8 +76,8 @@ const UserSpace: React.FC = () => {
           {/* Invitation Cards */}
           {user?.role === 'departement_admin' && 
           <>
-            <div className="mt-6 p-4 bg-[#F5F9FD] rounded-md shadow-md">
-              <h2 className="text-lg font-bold mb-4">Invitation</h2>
+            <div className="mt-6 p-4 bg-[#111827] rounded-md shadow-md">
+              <h2 className="text-lg font-bold mb-4 text-[#40A9FF]">Invitation</h2>
               {colabs.map((colab) => {
                 return(
                   <InvitationCard key={colab.id} title={colab.sourceDepartement} color={colors[Math.floor(Math.random() * colors.length)]}/>

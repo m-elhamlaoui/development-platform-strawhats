@@ -21,7 +21,7 @@ const fileTypes: FileType[] = [
 
 export default function FileTypeFilter({ selectedType, onTypeSelect }: FileTypeFilterProps) {
   return (
-    <div className="flex gap-4 mb-6 p-4 bg-white rounded-lg shadow-sm">
+    <div className="flex gap-4 mb-6 p-4 bg-[#111827] rounded-lg shadow-sm">
       {fileTypes.map((type) => (
         <button
           key={type.id}
@@ -29,7 +29,7 @@ export default function FileTypeFilter({ selectedType, onTypeSelect }: FileTypeF
           className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors
             ${selectedType === type.id 
               ? 'bg-blue-100 text-blue-600' 
-              : 'hover:bg-gray-100'
+              : 'hover:bg-gray-100 hover:text-blue-600 text-white'
             }`}
         >
           <span>{type.icon}</span>

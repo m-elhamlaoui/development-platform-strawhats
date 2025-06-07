@@ -75,7 +75,7 @@ export default function SharedPage({ params }: { params: Promise<{ Category: str
   });
 
   return (
-    <div className="flex h-screen bg-[#EBF2FC]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
       
       <div className="flex-1 p-6 ml-52">

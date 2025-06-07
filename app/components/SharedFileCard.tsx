@@ -40,12 +40,11 @@ export default function SharedFileCard({ name, type, size, sharedBy, path }: Sha
 };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(path, name)}>
-      <div className="w-12 h-12 bg-gray-50 rounded-lg flex items-center justify-center mb-3">
-        <Icon className={`text-2xl ${color}`} />
-      </div>
-      <h3 className="font-bold text-gray-900 mb-1 truncate">{name.split('-')[1]}</h3>
-      <div className="text-sm text-gray-500">
+    <div className="bg-[#111827] p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer" onClick={() => handleDownload(path, name)}>
+        <Icon className={`text-2xl text-[#13C2C2]`} />
+      
+      <h3 className="font-bold text-[#40A9FF] mb-1 truncate">{name.split('-')[1]}</h3>
+      <div className="text-sm text-white">
         <p className="mb-1">{type === "application/msword" || type === "application/vnd.openxmlformats-officedocument.wordprocessingml.document" ? "word" : type === "application/vnd.ms-excel" || type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" ? "excel" : type} file</p>
         <p className="mb-1">{(size/(1024*1024)).toFixed(1)} mb</p>
         <p className="text-xs">By {sharedBy}</p>

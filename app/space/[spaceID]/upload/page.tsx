@@ -84,13 +84,13 @@ export default function UploadPage() {
   };
 
   return (
-    <div className="flex h-screen bg-[#eaf2fc]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
       <div className="flex-1 flex flex-col items-center justify-center p-6 ml-52">
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-8 mb-8">
-          <h1 className="text-3xl font-bold text-center text-[#205295] mb-8">Upload File</h1>
+        <div className="w-full max-w-xl bg-[#111827] rounded-2xl shadow-md p-8 mb-8">
+          <h1 className="text-3xl font-bold text-center text-[#40A9FF] mb-8">Upload File</h1>
           <div
-            className="bg-[#f5f9fd] rounded-xl flex flex-col items-center justify-center py-12 px-4 mb-6 border-2 border-dashed border-[#b3c6e6] cursor-pointer"
+            className="bg-[#0d1423] rounded-xl flex flex-col items-center justify-center py-12 px-4 mb-6 border-2 border-dashed border-[#162138] cursor-pointer"
             onClick={() => fileInputRef.current && fileInputRef.current.click()}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
@@ -99,7 +99,7 @@ export default function UploadPage() {
             <p className="text-xl font-semibold text-[#205295] mb-2">Drag & Drop Your Files Here</p>
             <button
               type="button"
-              className="mt-2 px-6 py-2 border border-[#377dff] text-[#377dff] rounded-lg bg-white font-medium hover:bg-[#eaf2fc] transition"
+              className="mt-2 px-6 py-2 border border-[#377dff] text-[#377dff] rounded-lg cursor-pointer font-medium hover:bg-[#eaf2fc] transition"
             >
               Choose files from your computer
             </button>
@@ -125,8 +125,8 @@ export default function UploadPage() {
         </div>
 
         {/* Upload Progress Section */}
-        <div className="w-full max-w-xl bg-white rounded-2xl shadow-md p-6">
-          <h2 className="text-2xl font-bold text-[#205295] mb-6 text-center">Upload Progress</h2>
+        <div className="w-full max-w-xl bg-[#111827] rounded-2xl shadow-md p-6">
+          <h2 className="text-2xl font-bold text-[#377dff] mb-6 text-center">Upload Progress</h2>
           <div className="space-y-4">
             {uploadProgress.length === 0 ? (
               <p className="text-gray-500 text-center">No files selected</p>
@@ -136,8 +136,8 @@ export default function UploadPage() {
                   <div className="w-4 h-4 rounded-full bg-indigo-400"></div>
                   <div className="flex-1">
                     <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold text-[#205295]">{file.name}</span>
-                      <span className="text-xs text-gray-400">{file.size}</span>
+                      <span className="font-semibold text-[#377dff]">{file.name}</span>
+                      <span className="text-xs text-white">{file.size}</span>
                     </div>
                     <div className="w-full h-2 rounded bg-gray-200 overflow-hidden">
                       <div

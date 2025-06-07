@@ -18,13 +18,13 @@ const CategoryCard: React.FC<CategoryCardProps> = ({ id, name, count, color, ico
   return (
     <Link href={`${pathname}/FileType/${name}`}>
     <div
-      className={`w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md ${color} hover:shadow-lg transition-shadow cursor-pointer`}
+      className={`w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md bg-[#111827] hover:shadow-lg transition-shadow cursor-pointer`}
     >
-      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-        <Icon className={`text-xl ${iconColor}`} />
-      </div>
-      <p className="text-white text-lg font-bold">{name}</p>
-      <p className="text-white text-sm">{count} files</p>
+      
+        <Icon className={`text-xl text-[#13C2C2]`} />
+      
+      <p className="text-[#40A9FF] text-lg font-bold">{name}</p>
+      <p className="text-[#40A9FF] text-sm">{count} files</p>
     </div>
     </Link>
   );

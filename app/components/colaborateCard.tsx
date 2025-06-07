@@ -18,7 +18,7 @@ const CollaborateCard: React.FC<CollaborateCardProps> = ({ id, name, color, imag
 
   return (
     <div
-      className={`w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md ${color} cursor-pointer`}
+      className={`w-40 h-40 flex flex-col items-center justify-center space-y-2 rounded-md bg-[#111827] cursor-pointer`}
       onClick={() => handleColaboration(name)}
     >
       <div className="relative w-16 h-16 rounded-full overflow-hidden">

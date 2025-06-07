@@ -54,7 +54,7 @@ const SideBarClient: React.FC = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 h-screen w-50 bg-[#06367A] text-white p-4 flex flex-col justify-between items-center">
+    <div className="fixed top-0 left-0 h-screen w-50 bg-[#111827] text-white p-4 flex flex-col justify-between items-center">
       <div>
         {/* Profile Picture */}
         <div className="flex items-center mb-4 justify-center">
@@ -81,7 +81,7 @@ const SideBarClient: React.FC = () => {
             <li className="mb-4">
               <Link href={`/space/${user?.userId}/shared`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/files') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                 <FaShareAlt className="mr-3" />
-                <span>Shared files</span>
+                <span>class files</span>
               </Link>
             </li>
             <li className="mb-4">
@@ -97,13 +97,13 @@ const SideBarClient: React.FC = () => {
                 <li className="mb-4">
                   <Link href={`/space/${user?.userId}/addUser`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users/add') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                     <FaUserPlus className="mr-3" />
-                    <span>Add users</span>
+                    <span>Add students</span>
                   </Link>
                 </li>
                 <li className="mb-4">
                   <Link href={`/space/${user?.userId}/users`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                     <FaUsers className="mr-3" />
-                    <span>Users</span>
+                    <span>Students</span>
                   </Link>
                 </li>
               </>
@@ -114,13 +114,13 @@ const SideBarClient: React.FC = () => {
                 <li className="mb-4">
                   <Link href={`/space/${user?.userId}/addDepartement`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users/add') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                     <FaUserPlus className="mr-3" />
-                    <span>Add departement</span>
+                    <span>Add class</span>
                   </Link>
                 </li>
                 <li className="mb-4">
                   <Link href={`/space/${user?.userId}/departement`} className={`flex items-center text-lg p-2 rounded-md transition-colors ${isActive('/users') ? 'bg-white text-[#06367A]' : 'hover:bg-white hover:text-[#06367A]'}`}>
                     <FaUsers className="mr-3" />
-                    <span>departements</span>
+                    <span>classes</span>
                   </Link>
                 </li>
               </>
@@ -131,13 +131,13 @@ const SideBarClient: React.FC = () => {
 
       <div>
         {/* Profile Edit Button */}
-        <Link href={`/space/${user?.userId}/editProfile`} className="mb-2 w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-700 flex items-center justify-center cursor-pointer">
+        <Link href={`/space/${user?.userId}/editProfile`} className="mb-2 w-full px-4 py-2 text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out flex items-center justify-center cursor-pointer">
           <FaUserEdit className="mr-2" />
           Edit Profile
         </Link>
 
         {/* Logout Button */}
-        <button className="mt-2 w-full px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 cursor-pointer" onClick={async () => {await logout();
+        <button className="mt-2 w-full px-4 py-2 border border-indigo-600 rounded-md text-indigo-600 hover:bg-indigo-600 hover:text-white cursor-pointer transition duration-150 ease-in-out " onClick={async () => {await logout();
           router.push('/login');
         }}>
           Log out

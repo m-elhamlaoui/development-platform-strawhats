@@ -22,20 +22,20 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-[#EBF2FC]">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+    <div className="flex justify-center items-center min-h-screen bg-[#0A192F]">
+      <div className="w-full max-w-md p-8 space-y-6 bg-[#111827] rounded-lg shadow-md">
         
-        <h1 className="text-2xl font-bold text-center text-[#2B548E]">Add User</h1>
+        <h1 className="text-2xl font-bold text-center text-[#40A9FF]">Add Class</h1>
 
       
         <form onSubmit={handleSubmit} className="space-y-4">
           
           <input
             type="text"
-            placeholder="DEPARTEMENT..."
+            placeholder="Class..."
             value={departement}
             onChange={(e) => setDepartement(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-[#2B548E] rounded-md focus:outline-none focus:border-blue-800 text-lg"
+            className="w-full px-4 py-2 border-2 border-[#40A9FF] rounded-md focus:outline-none focus:border-blue-800 text-lg text-white"
           />
 
           
@@ -44,7 +44,7 @@ const Login: React.FC = () => {
             placeholder="ADMIN..."
             value={admin}
             onChange={(e) => setAdmin(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-[#2B548E] rounded-md focus:outline-none focus:border-blue-800 text-lg"
+            className="w-full px-4 py-2 border-2 border-[#40A9FF] rounded-md focus:outline-none focus:border-blue-800 text-lg text-white"
           />
 
           <input
@@ -52,13 +52,13 @@ const Login: React.FC = () => {
             placeholder="ADMIN MAIL..."
             value={adminmail}
             onChange={(e) => setAdminMail(e.target.value)}
-            className="w-full px-4 py-2 border-2 border-[#2B548E] rounded-md focus:outline-none focus:border-blue-800 text-lg"
+            className="w-full px-4 py-2 border-2 border-[#40A9FF] rounded-md focus:outline-none focus:border-blue-800 text-lg text-white"
           />
 
           
           <button
             type="submit"
-            className="w-full px-4 py-2 text-lg font-semibold text-[#2B548E] border-2 border-[#2B548E] rounded-md hover:bg-blue-600 hover:text-white transition duration-300 cursor-pointer"
+            className="w-full px-4 py-2 text-lg font-semibold text-[#40A9FF] border-2 border-[#40A9FF] rounded-md hover:bg-blue-600 hover:text-white transition duration-300 cursor-pointer"
           >
             SUBMIT
           </button>

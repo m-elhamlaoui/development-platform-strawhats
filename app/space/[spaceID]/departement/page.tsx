@@ -51,7 +51,7 @@ export default function UsersPage() {
   const filteredUsers = users === null ? [] : users.filter(user => user.departmentName.toLowerCase().includes(searchQuery.toLowerCase()));
 
   return (
-    <div className="flex h-screen bg-[#eaf2fc]">
+    <div className="flex h-screen bg-[#0A192F]">
       <Sidebar />
       <div className="flex-1 p-10 ml-52">
         {/* Search Bar */}
@@ -59,12 +59,12 @@ export default function UsersPage() {
           <Search onSearch={setSearchQuery} />
         </div>
         <div className="w-full max-w-4xl">
-          <h2 className="text-xl font-bold text-[#205295] mb-6">Manage Users</h2>
+          <h2 className="text-xl font-bold text-[#40A9FF] mb-6">Manage Classes</h2>
           <div className="space-y-4">
             {filteredUsers.map((user, idx) => (
               <div
                 key={user.departmentName}
-                className="flex items-center bg-white rounded-xl px-6 py-4 shadow-sm relative"
+                className="flex items-center bg-[#111827] rounded-xl px-6 py-4 shadow-sm relative"
               >
                 {/* User image or colored circle */}
                 {user.imgurl ? (
@@ -79,10 +79,10 @@ export default function UsersPage() {
                   </div>
                 )}
                 <div className="flex-1 flex items-center">
-                  <span className="font-semibold text-[#205295] text-lg">{user.departmentName}</span>
-                  <span className="ml-6 text-gray-400">{user.userName}</span>
+                  <span className="font-semibold text-[#40A9FF] text-lg">{user.departmentName}</span>
+                  <span className="ml-6 text-white">{user.userName}</span>
                 </div>
-                <span className="text-gray-300 mr-6">{user.createdAt}</span>
+                
                 <FaCog className="text-[#205295] text-xl cursor-pointer hover:text-indigo-500 transition-color" title="Manage departement" onClick={() => handleSettings(user.id)}/>
                 {isDeleteOpen && user.id === conf && (
                   <div className="absolute right-0 top-full mt-2 bg-white rounded-lg shadow-xl p-4 z-50">
