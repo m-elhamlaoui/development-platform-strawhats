@@ -1,0 +1,67 @@
+@startuml
+!define TITLE 2.3 Diagramme de séquence - Upload et partage de fichier
+title TITLE
+
+actor Student as S
+participant "Web Interface" as UI
+participant "File Controller" as FC
+participant "File Service" as FS
+participant "Storage Service" as SS
+participant "Database" as DB
+participant "File System" as FSYS
+
+S -> UI : Upload file
+activate UI
+
+UI -> FC : POST /api/files/upload
+activate FC
+
+FC -> FS : uploadFile(file, userId)
+activate FS
+
+FS -> SS : checkStorageQuota(userId)
+activate SS
+SS -> DB : getUserStorage(userId)
+activate DB
+DB --> SS : storageInfo
+deactivate DB
+SS --> FS : quotaAvailable
+deactivate SS
+
+alt quota available
+    FS -> FSYS : saveFile(file)
+    activate FSYS
+    FSYS --> FS : filePath
+    deactivate FSYS
+    
+    FS -> DB : saveFileMetadata(file, userId)
+    activate DB
+    DB --> FS : fileId
+    deactivate DB
+    
+    FS --> FC : success(fileId)
+    FC --> UI : 200 OK {fileId, filename}
+    UI --> S : File uploaded successfully
+    
+    S -> UI : Share with class
+    UI -> FC : POST /api/files/{fileId}/share
+    FC -> FS : shareWithClass(fileId, classId)
+    FS -> DB : createFileShare(fileId, classId, CLASS_WIDE)
+    activate DB
+    DB --> FS : shareId
+    deactivate DB
+    FS --> FC : success
+    FC --> UI : 200 OK
+    UI --> S : File shared with class
+    
+else quota exceeded
+    FS --> FC : error(quota_exceeded)
+    FC --> UI : 400 Bad Request
+    UI --> S : Storage quota exceeded
+end
+
+deactivate FS
+deactivate FC
+deactivate UI
+
+@enduml

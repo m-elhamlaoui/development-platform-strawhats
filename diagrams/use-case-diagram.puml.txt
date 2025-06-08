@@ -1,0 +1,45 @@
+@startuml
+!define TITLE 2.1 Diagramme de cas d'utilisation
+title TITLE
+
+left to right direction
+
+actor "Platform Admin" as PA
+actor "Class Admin" as CA  
+actor "Student" as S
+
+rectangle "Classes Courses Manager System" {
+  usecase "Create Class" as UC1
+  usecase "Manage Classes" as UC2
+  usecase "Assign Class Admin" as UC3
+  usecase "Add Student to Class" as UC4
+  usecase "Remove Student from Class" as UC5
+  usecase "Upload File" as UC6
+  usecase "Share File with Class" as UC7
+  usecase "Share File Directly" as UC8
+  usecase "Download File" as UC9
+  usecase "Categorize File" as UC10
+  usecase "Monitor Content" as UC11
+  usecase "Enable Inter-class Collaboration" as UC12
+}
+
+PA --> UC1
+PA --> UC2
+PA --> UC3
+
+CA --> UC4
+CA --> UC5
+CA --> UC11
+CA --> UC12
+
+S --> UC6
+S --> UC7
+S --> UC8
+S --> UC9
+S --> UC10
+
+UC6 .> UC10 : <<include>>
+UC7 .> UC10 : <<include>>
+UC8 .> UC10 : <<include>>
+
+@enduml

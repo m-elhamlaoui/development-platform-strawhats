@@ -1,0 +1,77 @@
+@startuml
+!define TITLE 2.4 Diagramme d'activités - Processus de gestion des fichiers
+title TITLE
+
+start
+
+:Student logs in;
+
+:Navigate to file management;
+
+if (Upload new file?) then (yes)
+  :Select file to upload;
+  
+  if (File type supported?) then (yes)
+    if (Storage quota available?) then (yes)
+      :Upload file to server;
+      :Auto-detect file category;
+      :Allow custom categorization;
+      :File successfully uploaded;
+    else (no)
+      :Display quota exceeded error;
+      stop
+    endif
+  else (no)
+    :Display unsupported file type error;
+    stop
+  endif
+endif
+
+:View uploaded files;
+
+if (Share file?) then (yes)
+  :Select file to share;
+  
+  if (Share with entire class?) then (yes)
+    :Create class-wide share;
+    :Notify class members;
+  else (no - direct share)
+    :Select specific students;
+    :Create direct share;
+    :Notify selected students;
+  endif
+  
+  :File sharing completed;
+endif
+
+if (Download file?) then (yes)
+  :Select file to download;
+  
+  if (Access authorized?) then (yes)
+    :Download file;
+    :Log download activity;
+  else (no)
+    :Display access denied error;
+  endif
+endif
+
+if (Manage categories?) then (yes)
+  :View current categories;
+  
+  if (Create new category?) then (yes)
+    :Enter category details;
+    :Save custom category;
+  endif
+  
+  if (Update file categories?) then (yes)
+    :Select files to recategorize;
+    :Apply new categories;
+    :Update file metadata;
+  endif
+endif
+
+:Return to main dashboard;
+
+stop
+
+@enduml
