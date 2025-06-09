@@ -1,6 +1,6 @@
 # UML Diagrams - Classes Courses Manager
 
-This branch contains PlantUML source files for the system's UML diagrams.
+This folder contains PlantUML source files for the system's UML diagrams.
 
 ## 📊 Available Diagrams
 
