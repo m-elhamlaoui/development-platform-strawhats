@@ -1,75 +1,74 @@
-# 🎓 Classes Courses Manager
+# UML Diagrams - Classes Courses Manager
 
-> A secure platform for universities to manage and share course-related files within classes.
+This directory contains PlantUML source files for the system's UML diagrams.
 
-## 📘 Overview
+## 📊 Available Diagrams
 
-**Classes Courses Manager** is a web-based application designed to help universities securely share course materials among students and staff. The system ensures that file sharing happens only within defined class boundaries unless explicitly authorized for collaboration between classes.
+### 2.1 Use Case Diagram
+**File:** `use-case-diagram.puml`
+- Shows interactions between users (Platform Admin, Class Admin, Student) and system functionality
+- Illustrates access control and permission boundaries
 
-Each user has a personal space where they can upload files, which can then be shared with individuals or the entire class. Files are categorized for better organization and accessibility.
+### 2.2 Class Diagram  
+**File:** `class-diagram.puml`
+- Defines core entities: User, Class, File, FileShare, Storage
+- Shows relationships and data structure
+- Includes enumerations for roles, file types, and share types
 
----
+### 2.3 Sequence Diagram
+**File:** `sequence-diagram.puml` 
+- Demonstrates file upload and sharing process
+- Shows interaction between UI, controllers, services, and database
+- Includes error handling for storage quotas
 
-## 🔐 User Roles
+### 2.4 Activity Diagram
+**File:** `activity-diagram.puml`
+- Illustrates complete file management workflow
+- Covers upload, sharing, download, and categorization processes
+- Shows decision points and alternative paths
 
-There are three types of users in the system:
+## 🛠️ How to Generate Diagrams
 
-| Role | Permissions |
-|------|-------------|
-| **Platform Admin** | Create and manage classes and assign class admins. |
-| **Class Admin** | Manage students (add/remove) within their class and monitor shared content. |
-| **Student** | Upload, share, and receive files within the class; send files directly to peers. |
+### Option 1: Online PlantUML
+1. Visit http://www.plantuml.com/plantuml/uml/
+2. Copy content from .puml files
+3. Paste and generate
 
----
+### Option 2: VS Code Extension
+1. Install "PlantUML" extension
+2. Open .puml files
+3. Use Alt+D to preview
 
-## 📁 File Management
-
-- Students can upload files to their **personal storage space**
-- Files can be shared:
-  - With specific students (direct sharing)
-  - With the entire class
-- Supported file types:
-  - 📷 Images
-  - 📄 PDFs
-  - 💼 Microsoft Word documents
-  - 📊 Excel spreadsheets
-  - 📁 Custom categories (e.g., "Assignments", "Projects", etc.)
-
----
-
-## 🧩 Key Features
-
-- ✅ Class-based isolation of file sharing
-- ✅ Direct file transfer between students
-- ✅ File categorization (auto-detected or custom)
-- ✅ Role-based access control
-- ✅ Support for inter-class collaboration when enabled
-
----
-
-## ⚙️ Tech Stack (Example)
-
-
-- **Frontend/Backend**:next.js
-- **Database**: sqlite
-- **Authentication**: JWT
-- **Storage**: Local filesystem
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-Make sure you have the following installed:
-
-- [next.js](https://nextjs.org/)
-- [Node.js](https://nodejs.org/)
-- [npm](https://www.npmjs.com/)  or yarn
-- Database engine
-
-### Installation 
-
+### Option 3: Command Line
 ```bash
-git clone https://github.com/m-elhamlaoui/development-platform-strawhats.git
-cd development-platform-strawhats.git
-npm install
-npm run dev
+# Install PlantUML
+npm install -g node-plantuml
+
+# Generate all diagrams
+plantuml docs/diagrams/*.puml
+
+# Generate specific diagram
+plantuml docs/diagrams/use-case-diagram.puml
+```
+
+### Option 4: GitHub Integration
+Add to your GitHub Actions workflow:
+```yaml
+- name: Generate PlantUML Diagrams
+  uses: cloudbees/plantuml-github-action@master
+  with:
+    args: -v -tsvg docs/diagrams/*.puml
+```
+
+## 📝 Naming Convention
+- Use kebab-case for file names
+- Include diagram type in filename
+- Use .puml extension
+- Keep titles consistent with document sections
+
+## 🔄 Updates
+When modifying diagrams:
+1. Update the corresponding .puml file
+2. Regenerate images if needed
+3. Update documentation references
+4. Commit both source and generated files
